@@ -1,6 +1,6 @@
 # Trabajo Práctico: 4
 
-![Logo del ITBA](https://www.itba.edu.ar/wp-content/uploads/2020/06/logo-itba.png)
+![Logo del ITBA](logoITBA.png)
 
 ## Presentación
 Bienvenidos al repositorio del **Trabajo Práctico BBDD, SQL y Manejo de Versiones** para la materia **Informatica Medica** del **Instituto Tecnológico de Buenos Aires (ITBA)**. Este proyecto ha sido desarrollado por el grupo de estudiantes detallado a continuación, bajo la supervisión de las docentes de la asignatura.

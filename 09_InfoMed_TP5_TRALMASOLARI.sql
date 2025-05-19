@@ -10,3 +10,4 @@ FROM recetas r
 JOIN medicos m ON r.id_medico = m.id_medico
 GROUP BY m.nombre
 ORDER BY cantidad_recetas DESC;
+

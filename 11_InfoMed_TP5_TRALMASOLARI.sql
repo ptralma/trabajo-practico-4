@@ -12,3 +12,4 @@ WHERE
 Consultas.fecha BETWEEN '2024-08-01' AND '2024-08-31'
 ORDER BY
     Consultas.fecha;
+

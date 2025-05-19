@@ -1,3 +1,4 @@
 SELECT nombre, matricula
 FROM medicos
-WHERE especialidad_id = 4;
+WHERE especialidad_id = 4; 
+

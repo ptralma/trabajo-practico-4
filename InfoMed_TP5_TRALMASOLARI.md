@@ -1,0 +1,245 @@
+# Trabajo Práctico 5 - Informática Médica
+
+**Alumnos**: Tralma, Solari  
+**Fecha**: 24 de mayo de 2025  
+
+Este documento contiene la resolución completa del TP5, incluyendo las 
+consignas de la Parte 1 y Parte 2, con las consultas SQL y los resultados 
+obtenidos.
+
+---
+
+## Parte 1
+
+### 1. ¿Qué tipo de base de datos es? Clasificarla según estructura y 
+función.
+
+La base de datos a utilizar se puede clasificar como **relacional** según 
+estructura (SQL) y **transaccional** según su función.
+
+En primer lugar, una base de datos relacional es aquella que organiza los 
+datos en tablas relacionadas mediante claves primarias y foráneas, y usa 
+el lenguaje SQL para gestionar y manipular la información a través de 
+transacciones (he aquí su función como BD transaccional). Tiene una 
+estructura lógica en tablas, provee integridad de los datos mediante 
+restricciones, y permite que se realicen consultas eficientes. Además, 
+sigue las propiedades ACID (Atomicidad, Consistencia, Aislamiento y 
+Durabilidad), garantizando que las transacciones sean seguras, coherentes 
+y recuperables. Esto la hace ideal para manejar grandes volúmenes de datos 
+con relaciones complejas, asegurando su integridad y accesibilidad. Por 
+otro lado, al ser transaccional permite algunas funciones principales como 
+lectura simple, modificaciones de datos, acciones individuales o en bulk.
+
+---
+
+### 2. Armar el diagrama entidad-relación de la base de datos dada.
+
+El modelo entidad-relación (DER) es un método gráfico que muestra las 
+características más importantes de la base de datos. Sirve como un esquema 
+visual que muestra cómo interactúan las entidades (objetos o conceptos del 
+mundo real) dentro de un dominio específico. Es una herramienta que 
+permite a los diseñadores de bases de datos visualizar la estructura de la 
+información antes de implementar la base de datos. En él se muestran 
+entidades, atributos y sus tipos, PK (primary keys), FK (foreign keys), 
+relaciones, cardinalidades.
+
+#### Modelo Propuesto
+
+Para armar el diagrama identificamos las siguientes entidades con sus 
+atributos:
+
+- **Paciente**:
+  - id_paciente (PK)
+  - Nombre
+  - Fecha de nacimiento
+  - Sexo biológico
+  - Dirección (atributo compuesto):
+    - Calle
+    - Número
+    - Ciudad
+- **Especialidad**:
+  - id_especialidad (PK)
+  - Nombre
+- **Médico**:
+  - id_medico (PK)
+  - Nombre_m
+  - id_especialidad (FK)
+  - Dirección profesional (atributo compuesto):
+    - Calle_m
+    - Número_m
+    - Ciudad_m
+- **Consulta**:
+  - id_consulta (PK)
+  - Fecha_c
+  - id_medico (FK)
+  - id_paciente (FK)
+  - Diagnóstico
+  - id_enfermedad (FK)
+- **Receta**:
+  - id_receta (PK)
+  - id_medico (FK)
+  - id_paciente (FK)
+  - Fecha
+  - id_enfermedad (FK)
+  - Medicamento
+  - Tratamiento
+  - Duración
+- **Enfermedad**:
+  - id_enfermedad (PK)
+  - Nombre_e
+
+**Nota**: En el caso de las recetas, no vinculamos las mismas a una 
+consulta, ya que un médico podría emitir una receta en un contexto no 
+registrado como consulta (como por ejemplo una renovación de medicación).
+
+**Diagrama Entidad-Relación (Propuesto)**:
+![Diagrama Entidad-Relación Propuesto](images/1-2-1.png)
+
+#### Modelo de la Cátedra
+
+Entidades con sus atributos:
+
+- **Pacientes**:
+  - id_paciente (PK)
+  - Nombre
+  - Fecha de nacimiento
+  - id_sexo (FK)
+  - Dirección (atributo compuesto):
+    - Calle
+    - Número
+    - Ciudad
+- **Sexo biológico**:
+  - id_sexo (PK)
+  - Descripción
+- **Especialidades**:
+  - id_especialidad (PK)
+  - Nombre
+- **Médicos**:
+  - id_medico (PK)
+  - Nombre
+  - Teléfono
+  - Email
+  - Matrícula
+  - id_especialidad (FK)
+- **Consultas**:
+  - id_consulta (PK)
+  - id_paciente (FK)
+  - id_medico (FK)
+  - Fecha
+  - Diagnóstico
+  - Tratamiento
+  - snomed_codigo
+- **Medicamentos**:
+  - id_medicamento (PK)
+  - Nombre
+- **Recetas**:
+  - id_receta (PK)
+  - Fecha
+  - id_medico (FK)
+  - id_paciente (FK)
+  - id_medicamento (FK)
+  - Descripción
+
+**Diagrama Entidad-Relación (Cátedra)**:
+![Diagrama Entidad-Relación Cátedra](images/1-2-2.png)
+
+---
+
+### 3. Armar el modelo lógico entidad-relación de la base de datos dada.
+
+#### Modelo Propuesto
+
+El modelo lógico entidad-relación fue realizado con dbdiagram.io, teniendo 
+en cuenta el DER realizado anteriormente.
+
+**Nota**: Una receta podría no tener una enfermedad asociada, por eso se 
+establece como una relación opcional, a diferencia de las demás, que son 
+relaciones obligatorias.
+
+**Modelo Lógico (Propuesto)**:
+![Modelo Lógico Propuesto](images/1-3-1.png)
+
+#### Modelo de la Cátedra
+
+El modelo lógico entidad-relación fue realizado con dbdiagram.io, teniendo 
+en cuenta el DER de la cátedra.
+
+**Modelo Lógico (Cátedra)**:
+![Modelo Lógico Cátedra](images/modelo_logico_catedra.png)
+
+---
+
+### 4. ¿Considera que la base de datos está normalizada? En caso que no lo 
+esté, ¿cómo podría hacerlo?
+
+#### Modelo Propuesto
+
+La normalización sirve para que las tablas estén estructuradas 
+correctamente. Para lograr esto, se siguen tres normas formales. La 
+primera norma formal indica que cada celda de la tabla puede tener un solo 
+valor. No se admiten json ni arreglos ni ninguna otra estructura que no 
+sea primitiva. Todas las filas deben tener el mismo número de columnas y 
+además debe haber una clave primaria para cada fila. La segunda norma 
+formal hace referencia a que todos los atributos deben ser totalmente 
+dependientes de su clave primaria, no debe haber dependencias parciales. 
+Por último, la tercera norma formal indica que cada columna que no sea 
+clave debe ser independiente de las demás columnas. Para que una tabla se 
+considere normalizada, se deben cumplir las tres normas.
+
+Teniendo esto en cuenta, notamos que la base de datos analizada no está 
+completamente normalizada. A pesar de que hay tablas correctamente 
+normalizadas, como por ejemplo la de especialidad, hay otras que presentan 
+algunos problemas. Por ejemplo, se debería dividir el atributo “Nombre” en 
+“Nombre” y “Apellido”, tanto en el caso de los pacientes como de los 
+médicos. Además, se debería agregar una entidad que haga referencia al 
+“Sexo Biológico”, en el que se delimiten el sexo mediante un id_sexo como 
+PK, para luego ser usado como FK en la tabla de pacientes, esto evitará 
+errores del tipo escribir “Mujer” en vez de “Femenino”. Además, tanto en 
+la tabla paciente como en la de médico podría haber inconsistencias o 
+errores de escritura en el campo de la ciudad, como por ejemplo “CABA”, 
+“Ciudad Autónoma de Buenos Aires” y “Capital Federal”. Para corregir esto 
+se debería crear una tabla específica para las ciudades, donde cada una 
+tenga un “id_ciudad” que se use como FK en la tabla Paciente y Médico, 
+eliminando la redundancia y cumpliendo la tercera norma formal.
+
+#### Modelo de la Cátedra
+
+En este caso, notamos que la base de datos analizada no está completamente 
+normalizada. Si bien parece que se cumplen los requisitos en gran escala 
+(o sea, las normas formales 1 y 2), se presentan algunas fallas en el 
+cumplimiento de la norma formal 3. A diferencia del modelo propuesto 
+anteriormente, ahora sí se genera una tabla normalizada para el “Sexo 
+Biológico”, delimitando el sexo mediante id_sexo (PK) y luego usando dicha 
+información en la tabla Pacientes como una FK. Esto es muy útil para 
+evitar errores y redundancia de información, ya que garantiza que solo 
+existan dos valores (“Masculino” y “Femenino”). Por otro lado, en la tabla 
+paciente se ven inconsistencias o errores de escritura en el campo de la 
+ciudad, como por ejemplo “Bs As”, “Buenos Aires” y “buenos aires”. Para 
+corregir esto se debería crear una tabla específica para las ciudades, 
+donde cada una tenga un “id_ciudad” que se use como FK en la tabla 
+Paciente, eliminando la redundancia y cumpliendo la tercera norma formal.
+
+En la tabla de Consultas, se podría normalizar el código de SNOMED para 
+evitar discrepancias que podrían generarse por errores de tipeo y entonces 
+todos podrían utilizar el mismo estándar. Para esto se puede hacer una 
+nueva tabla donde se enlistan los diferentes diagnósticos y su PK 
+identifique al código SNOMED.
+
+---
+
+## Parte 2
+
+### 1. Cuando se realizan consultas sobre la tabla paciente agrupando por 
+ciudad los tiempos de respuesta son demasiado largos. Proponer mediante 
+una query SQL una solución a este problema.
+
+**Consulta SQL:**
+
+```sql
+CREATE INDEX idx_ciudad_normalizada
+ON pacientes (TRIM(LOWER(ciudad)));
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE tablename = 'pacientes';
+
+![Resultado Consulta 1](images/2-1.png)

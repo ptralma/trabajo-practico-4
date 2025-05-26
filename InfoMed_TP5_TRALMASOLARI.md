@@ -3,16 +3,16 @@
 **Alumnos**: Tralma, Solari  
 **Fecha**: 24 de mayo de 2025  
 
-Este documento contiene la resolución completa del TP5, incluyendo las 
+Este documento contiene la resolución completa del TP4, incluyendo las 
 consignas de la Parte 1 y Parte 2, con las consultas SQL y los resultados 
 obtenidos.
 
+Primero resolveremos los puntos 2, 3 y 4 considerando otra forma de resolver el diseño de la base de datos usando únicamente la información brindada en el texto. Luego resolveremos los mismos puntos utilizando la implementación hecha por la cátedra.
 ---
 
 ## Parte 1
 
-### 1. ¿Qué tipo de base de datos es? Clasificarla según estructura y 
-función.
+### 1. ¿Qué tipo de base de datos es? Clasificarla según estructura y función.
 
 La base de datos a utilizar se puede clasificar como **relacional** según 
 estructura (SQL) y **transaccional** según su función.
@@ -575,6 +575,10 @@ ORDER BY total_pacientes DESC;
 ```
 ![Resultado Consulta 18](images/2-18.png)
 
+## Parte 3: Manejo de versiones con Git y Github
+
+**Aclaración:** Al realizar la parte 3, se cumplieron las consignas indicadas paso por paso. Sin embargo, al finalizar el ítem 3 (guardar cada una de las queries que se utilizaron para resolver las primeras 10 consignas de SQL con un mismo commit), notamos que había errores en algunos queries, por lo que tuvimos que corregirlos luego de haberse realizado el commit inicial. Es por este motivo, que aparecen en Git como “Updated” los queries 4,9,10. Nos ocurrió lo mismo luego de realizar los commits individuales de las queries 11,12,13,14. 
+A su vez, también debimos modificar los queries 16,17 y 18 que se encuentran en otra rama creada. 
 
 
 

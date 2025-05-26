@@ -228,9 +228,7 @@ identifique al código SNOMED.
 
 ## Parte 2
 
-### 1. Cuando se realizan consultas sobre la tabla paciente agrupando por 
-ciudad los tiempos de respuesta son demasiado largos. Proponer mediante 
-una query SQL una solución a este problema.
+### 1. Cuando se realizan consultas sobre la tabla paciente agrupando por ciudad los tiempos de respuesta son demasiado largos.Proponer mediante una query SQL una solución a este problema.
 
 **Consulta SQL:**
 
@@ -242,5 +240,23 @@ FROM pg_indexes
 WHERE tablename = 'pacientes';
 ```
 ![Resultado Consulta 1](images/2-1.png)
+
+### 2.Se tiene la fecha de nacimiento de los pacientes. Se desea calcular la edad de los pacientes y almacenarla de forma dinámica en el sistema ya que es un valor típicamente consultado, junto con otra información relevante del paciente.
+
+**Consulta SQL:**
+```sql
+CREATE OR REPLACE VIEW vista_pacientes_con_edad AS
+SELECT
+    id_paciente,
+    nombre,
+    fecha_nacimiento,
+    ciudad,
+    EXTRACT(YEAR FROM AGE(CURRENT_DATE, fecha_nacimiento)) AS edad
+FROM pacientes;
+SELECT * FROM vista_pacientes_con_edad;
+```
+![Resultado Consulta 2](images/2-2.png)
+
+
 
 

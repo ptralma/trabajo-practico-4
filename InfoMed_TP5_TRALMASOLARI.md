@@ -165,7 +165,7 @@ El modelo lógico entidad-relación fue realizado con dbdiagram.io, teniendo
 en cuenta el DER de la cátedra.
 
 **Modelo Lógico (Cátedra)**:
-![Modelo Lógico Cátedra](images/modelo_logico_catedra.png)
+![Modelo Lógico Cátedra](images/1-3-2.png)
 
 ---
 

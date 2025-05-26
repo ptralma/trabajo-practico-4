@@ -7,7 +7,6 @@ Este documento contiene la resolución completa del TP4, incluyendo las
 consignas de la Parte 1 y Parte 2, con las consultas SQL y los resultados 
 obtenidos.
 
-Primero resolveremos los puntos 2, 3 y 4 considerando otra forma de resolver el diseño de la base de datos usando únicamente la información brindada en el texto. Luego resolveremos los mismos puntos utilizando la implementación hecha por la cátedra.
 ---
 
 ## Parte 1
@@ -30,6 +29,7 @@ con relaciones complejas, asegurando su integridad y accesibilidad. Por
 otro lado, al ser transaccional permite algunas funciones principales como 
 lectura simple, modificaciones de datos, acciones individuales o en bulk.
 
+Primero resolveremos los puntos 2, 3 y 4 considerando otra forma de resolver el diseño de la base de datos usando únicamente la información brindada en el texto. Luego resolveremos los mismos puntos utilizando la implementación hecha por la cátedra.
 ---
 
 ### 2. Armar el diagrama entidad-relación de la base de datos dada.

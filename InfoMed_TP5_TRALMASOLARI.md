@@ -258,5 +258,332 @@ SELECT * FROM vista_pacientes_con_edad;
 ![Resultado Consulta 2](images/2-2.png)
 
 
+### 3.La paciente, “Luciana Gómez”, ha cambiado de dirección. Antes vivía en “Avenida Las Heras 121” en “Buenos Aires”, pero ahora vive en “Calle Corrientes 500” en “Buenos Aires”. Actualizar la dirección de este paciente en la base de datos.
+
+**Consulta SQL:**
+```sql
+#Ej 3
+SELECT * FROM pacientes WHERE nombre = 'Luciana Gómez';
+UPDATE pacientes
+SET calle = 'Calle Corrientes',
+    numero = '500',
+    ciudad = 'Buenos Aires'
+WHERE nombre = 'Luciana Gómez';
+SELECT * FROM pacientes WHERE nombre = 'Luciana Gómez';
+
+```
+![Resultado Consulta 3](images/2-3.png)
+
+
+### 4.Seleccionar el nombre y la matrícula de cada médico cuya especialidad sea identificada por el id 4.
+
+**Consulta SQL:**
+```sql
+#Ej 4
+SELECT nombre, matricula
+FROM medicos
+WHERE especialidad_id = 4;
+```
+![Resultado Consulta 4](images/2-4.png)
+
+### 5.Puede pasar que haya inconsistencias en la forma en la que están escritos los nombres de las ciudades, ¿cómo se corrige esto?Agregar la query correspondiente.
+
+**Consulta SQL:**
+```sql
+#Ej 5
+-- Buenos Aires
+UPDATE pacientes SET ciudad = 'Buenos Aires'
+WHERE TRIM(LOWER(ciudad)) IN (
+  'bs aires', 'buenos aires', 'buenos   aires', 'buenos aires ',
+  'buenos aiers', '  buenos aires'
+);
+
+-- Córdoba
+UPDATE pacientes SET ciudad = 'Córdoba'
+WHERE TRIM(LOWER(ciudad)) IN ('cordoba', 'córdoba', 'córdobá', 'córodba');
+
+-- Mendoza
+UPDATE pacientes SET ciudad = 'Mendoza'
+WHERE TRIM(LOWER(ciudad)) IN ('mendoza', 'mendzoa');
+
+-- Rosario
+UPDATE pacientes SET ciudad = 'Rosario'
+WHERE TRIM(LOWER(ciudad)) = 'rosario';
+
+-- Santa Fe
+UPDATE pacientes SET ciudad = 'Santa Fe'
+WHERE TRIM(LOWER(ciudad)) = 'santa fe';
+
+SELECT
+    id_paciente,
+    nombre,
+    fecha_nacimiento,
+    EXTRACT(YEAR FROM AGE(CURRENT_DATE, fecha_nacimiento)) AS edad,
+    numero,
+    calle,
+    ciudad
+FROM pacientes
+ORDER BY id_paciente;
+
+```
+![Resultado Consulta 5](images/2-5.png)
+
+### 6.Obtener el nombre y la dirección de los pacientes que viven en Buenos Aires.
+
+**Consulta SQL:**
+```sql
+#Ej 6
+SELECT nombre, numero, calle
+FROM pacientes
+WHERE ciudad = 'Buenos Aires';
+
+
+```
+![Resultado Consulta 6](images/2-6.png)
+
+### 7.Cantidad de pacientes que viven en cada ciudad.
+
+**Consulta SQL:**
+```sql
+#Ej 7
+SELECT ciudad, COUNT(*) AS cantidad_pacientes
+FROM pacientes
+GROUP BY ciudad
+ORDER BY cantidad_pacientes DESC;
+
+```
+![Resultado Consulta 7](images/2-7.png)
+
+### 8.Cantidad de pacientes por sexo que viven en cada ciudad.
+
+**Consulta SQL:**
+```sql
+#Ej 8
+SELECT
+    p.ciudad,
+    s.descripcion AS sexo,
+    COUNT(*) AS cantidad_pacientes
+FROM pacientes p
+JOIN sexobiologico s ON p.id_sexo = s.id_sexo
+GROUP BY p.ciudad, s.descripcion
+ORDER BY cantidad_pacientes DESC;
+
+```
+![Resultado Consulta 8](images/2-8.png)
+
+
+### 9.Obtener la cantidad de recetas emitidas por cada médico.
+
+**Consulta SQL:**
+```sql
+#Ej 9
+#Forma 1
+SELECT id_medico, COUNT(*) AS cantidad_recetas
+FROM recetas
+GROUP BY id_medico
+ORDER BY cantidad_recetas DESC;
+
+#Forma 2
+SELECT m.nombre, COUNT(*) AS cantidad_recetas
+FROM recetas r
+JOIN medicos m ON r.id_medico = m.id_medico
+GROUP BY m.nombre
+ORDER BY cantidad_recetas DESC;
+
+
+```
+![Resultado Consulta 9](images/2-9.png)
+
+### 10.Obtener todas las consultas médicas realizadas por el médico con ID igual a 3 durante el mes de agosto de 2024.
+
+**Consulta SQL:**
+```sql
+#Ej 10
+SELECT
+    Consultas.id_consulta,
+    Consultas.fecha,
+    Pacientes.nombre AS paciente,
+    Medicos.nombre AS medico,
+    Consultas.diagnostico,
+    Consultas.snomed_codigo,
+    Consultas.tratamiento
+FROM
+    Consultas
+JOIN
+    Pacientes ON Consultas.id_paciente = Pacientes.id_paciente
+JOIN
+    Medicos ON Consultas.id_medico = Medicos.id_medico
+WHERE
+    Consultas.id_medico = 3
+    AND Consultas.fecha BETWEEN '2024-08-01' AND '2024-08-31'
+ORDER BY
+    Consultas.fecha;
+
+```
+![Resultado Consulta 10](images/2-10.png)
+
+### 11.Obtener el nombre de los pacientes junto con la fecha y el diagnóstico de todas las consultas médicas realizadas en agosto del 2024.
+
+**Consulta SQL:**
+```sql
+#Ej 11
+SELECT
+	Pacientes.nombre AS paciente,
+    Consultas.fecha,
+    Consultas.diagnostico
+FROM
+    Consultas
+JOIN
+    Pacientes ON Consultas.id_paciente = Pacientes.id_paciente
+JOIN
+    Medicos ON Consultas.id_medico = Medicos.id_medico
+WHERE
+Consultas.fecha BETWEEN '2024-08-01' AND '2024-08-31'
+ORDER BY
+    Consultas.fecha;
+
+```
+![Resultado Consulta 11](images/2-11.png)
+
+### 12.Obtener el nombre de los medicamentos prescritos más de una vez por el médico con ID igual a 2.
+
+**Consulta SQL:**
+```sql
+#Ej 12
+SELECT
+    Medicamentos.nombre AS medicamento,
+    COUNT(Recetas.id_receta) AS cantidad_prescripciones
+FROM
+    Recetas
+JOIN
+    Medicamentos ON Recetas.id_medicamento = Medicamentos.id_medicamento
+WHERE
+    Recetas.id_medico = 2
+GROUP BY
+    Medicamentos.id_medicamento, Medicamentos.nombre
+HAVING
+    COUNT(Recetas.id_receta) > 1
+ORDER BY
+    Medicamentos.nombre;
+
+```
+![Resultado Consulta 12](images/2-12.png)
+
+### 13. Obtener el nombre de los pacientes junto con la cantidad total de recetas que han recibido.
+
+**Consulta SQL:**
+```sql
+#Ej 13
+SELECT
+    p.nombre,
+    COUNT(r.id_receta) AS cantidad_recetas
+FROM Pacientes p
+LEFT JOIN Recetas r ON p.id_paciente = r.id_paciente
+GROUP BY p.nombre;
+ORDER BY cantidad_recetas DESC;
+
+```
+![Resultado Consulta 13](images/2-13.png)
+
+### 14.Obtener el nombre del medicamento más recetado junto con la cantidad de recetas emitidas para ese medicamento.
+
+**Consulta SQL:**
+```sql
+#Ej 14
+SELECT
+    m.nombre,
+    COUNT(r.id_receta) AS cantidad_recetas
+FROM Medicamentos m
+JOIN Recetas r ON m.id_medicamento = r.id_medicamento
+GROUP BY m.nombre
+ORDER BY cantidad_recetas DESC
+LIMIT 1;
+
+```
+![Resultado Consulta 14](images/2-14.png)
+
+### 15.Obtener el nombre del paciente junto con la fecha de su última consulta y el diagnóstico asociado.
+
+**Consulta SQL:**
+```sql
+#Ej 15
+SELECT
+    p.nombre,
+    c.fecha,
+    c.diagnostico
+FROM Pacientes p
+JOIN Consultas c ON p.id_paciente = c.id_paciente
+WHERE (p.id_paciente, c.fecha) IN (
+    SELECT id_paciente, MAX(fecha)
+    FROM Consultas
+    GROUP BY id_paciente
+);
+
+```
+![Resultado Consulta 15](images/2-15.png)
+
+### 16.Obtener el nombre del médico junto con el nombre del paciente y el número total de consultas realizadas por cada médico para cada paciente, ordenado por médico y paciente.
+
+**Consulta SQL:**
+```sql
+#Ej 16
+SELECT
+    m.nombre AS medico,
+    p.nombre AS paciente,
+    COUNT(c.id_consulta) AS total_consultas
+FROM Medicos m
+JOIN Consultas c ON m.id_medico = c.id_medico
+JOIN Pacientes p ON c.id_paciente = p.id_paciente
+GROUP BY m.nombre, p.nombre
+ORDER BY m.nombre, p.nombre;
+
+```
+![Resultado Consulta 16](images/2-16.png)
+
+### 17.Obtener el nombre del medicamento junto con el total de recetas prescritas para ese medicamento, el nombre del médico que lo recetó y el nombre del paciente al que se le recetó, ordenado por total de recetas en orden descendente.
+
+**Consulta SQL:**
+```sql
+#Ej 17
+SELECT
+    m.nombre AS medicamento,
+    COUNT(r.id_receta) AS total_recetas,
+    med.nombre AS medico,
+    p.nombre AS paciente
+FROM Medicamentos m
+JOIN Recetas r ON m.id_medicamento = r.id_medicamento
+JOIN Medicos med ON r.id_medico = med.id_medico
+JOIN Pacientes p ON r.id_paciente = p.id_paciente
+GROUP BY m.nombre, med.nombre, p.nombre
+ORDER BY total_recetas DESC;
+```
+![Resultado Consulta 17](images/2-17.png)
+
+### 18.Obtener el nombre del médico junto con el total de pacientes a los que ha atendido, ordenado por el total de pacientes en orden descendente.
+
+**Consulta SQL:**
+```sql
+#Ej 18
+SELECT
+    m.nombre,
+    COUNT(DISTINCT c.id_paciente) AS total_pacientes
+FROM Medicos m
+LEFT JOIN Consultas c ON m.id_medico = c.id_medico
+GROUP BY m.nombre
+ORDER BY total_pacientes DESC;
+
+```
+![Resultado Consulta 18](images/2-18.png)
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -169,8 +169,7 @@ en cuenta el DER de la cátedra.
 
 ---
 
-### 4. ¿Considera que la base de datos está normalizada? En caso que no lo 
-esté, ¿cómo podría hacerlo?
+### 4. ¿Considera que la base de datos está normalizada? En caso que no lo esté, ¿cómo podría hacerlo?
 
 #### Modelo Propuesto
 
@@ -241,5 +240,7 @@ ON pacientes (TRIM(LOWER(ciudad)));
 SELECT indexname, indexdef
 FROM pg_indexes
 WHERE tablename = 'pacientes';
-
+```
 ![Resultado Consulta 1](images/2-1.png)
+
+

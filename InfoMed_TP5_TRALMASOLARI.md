@@ -1,7 +1,7 @@
 # Trabajo Práctico 5 - Informática Médica
 
 **Alumnos**: Tralma, Solari  
-**Fecha**: 24 de mayo de 2025  
+**Fecha**: 24 de mayo de 2025   
 
 Este documento contiene la resolución completa del TP4, incluyendo las 
 consignas de la Parte 1 y Parte 2, con las consultas SQL y los resultados 
